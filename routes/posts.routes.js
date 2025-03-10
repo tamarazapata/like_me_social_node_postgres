@@ -6,10 +6,11 @@ import {
 //   updateTravels,
 //   deleteTravels,
 } from "../src/controllers/posts.controllers.js";
+
 const router = express.Router();
 
-router.get("/posts", getAllPosts);
-router.post("/posts", createPosts);
+router.get("/", getAllPosts);
+router.post("/", createPosts);
 // router.put("/travels/:id", updateTravels);
 // router.delete("/travels/:id", deleteTravels);
 
