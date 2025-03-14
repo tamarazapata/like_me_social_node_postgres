@@ -13,7 +13,7 @@ Una API construida con **Node.js, Express y PostgreSQL** que permite gestionar p
 
 ### 1️⃣ Clonar el repositorio
 ```sh
-git clone [https://github.com/tu-usuario/like-me-social-node.git](https://github.com/tamarazapata/like_me_social_node_postgres)
+git clone https://github.com/tamarazapata/like_me_social_node_postgres
 cd like-me-social-node
 ```
 
