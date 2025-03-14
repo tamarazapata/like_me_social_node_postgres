@@ -1,13 +1,13 @@
 import pool from "../../db/conection.db.js";
 
+
 const getPosts = async () => {
   const SQLquery = { text: "SELECT * FROM posts" };
     const response = await pool.query(SQLquery);
     return response.rows;
 };
 
-
-const createPost = async ({ title, image_url, post_description, likes }) => {
+const addPost = async ({ title, image_url, post_description, likes }) => {
   const SQLquery = {
     text: "INSERT INTO posts (title, image_url, post_description, likes) VALUES ($1, $2, $3, $4) RETURNING *",
     values: [title, image_url, post_description, likes],
@@ -16,23 +16,37 @@ const createPost = async ({ title, image_url, post_description, likes }) => {
     return response.rows[0];
 };
 
-// const updateTravel = async (id, { presupuesto }) => {
-//   const SQLquery = {
-//     text: "UPDATE travels SET presupuesto = $1 WHERE id = $2 RETURNING *",
-//     values: [presupuesto, id],
-//   };
-//     const response = await pool.query(SQLquery);
-//     return response.rows[0];
-// }
+const setPost = async (title, image_url, post_description, likes, postId, oldData) => {
+  const newTitle = title || oldData.title
+  const newImageUrl = image_url || oldData.image_url
+  const newPostDescription = post_description || oldData.post_description
+  const newLikes = likes || oldData.likes
 
-// const destroyTravel = async (id) => {
-//   const SQLquery = {
-//     text: "DELETE FROM travels WHERE id = $1",
-//     values: [id],
-//   };
-//     const response = await pool.query(SQLquery);
-//     return response.rowCount;
-// };
+  const SQLquery = {
+    text: "UPDATE posts SET title = $1, image_url = $2, post_description = $3, likes = $4 WHERE id = $5 RETURNING *",
+    values: [newTitle, newImageUrl,newPostDescription,newLikes,  postId],
+  };
+  
+  const response = await pool.query(SQLquery);
+  return response.rows[0];
+}
 
-export {getPosts, createPost}
-// export { getTravels, createTravel, updateTravel, destroyTravel };
+const postById = async (id) => {
+  const SQLquery = {
+    text: "SELECT * FROM posts WHERE id = $1",
+    values: [Number(id)]
+  };
+  const response = await pool.query(SQLquery);
+  return response.rows[0];
+}
+
+const destroyPost = async (id) => {
+  const SQLquery = {
+    text: "DELETE FROM posts WHERE id = $1",
+    values: [Number(id)]
+  };
+  const response = await pool.query(SQLquery);
+  return response.rowCount;
+}
+
+export {getPosts, addPost, setPost, postById, destroyPost}
